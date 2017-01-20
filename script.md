@@ -23,7 +23,9 @@ ReactDOM.render(
 );
 ```
 
-Of course the main advantage here is that you now get to use props to change the component behavior e.g we can take the message as a prop by adding it to the function arguments, using it inside the function body, and of-course passing in the message as a property to the component.
+Of course one big advantage of components is that you get to use props to change the component behavior e.g 
+we can take the message as a prop by adding it to the function arguments, using it inside the function body
+And now we get to pass in the message as a property to the component.
 
 ```
 import * as React from 'react';
@@ -37,7 +39,7 @@ ReactDOM.render(
 );
 ```
 
-You can see it still behave the same but now we can also control the rendering with the passed in prop. 
+You can see it still behaves the same but now we can also control the rendering with the passed in prop. 
 
 ```
 import * as React from 'react';
@@ -51,7 +53,10 @@ ReactDOM.render(
 );
 ```
 
-Finally although this works fine for simple stateless components, if you want to create high quality components, it is recommended that you annotate your component as `React.StatlessComponent` which takes a generic argument that controls the props that allows you to provide easy type annotations for the props
+Although simple functions work fine for simple stateless components, 
+if you want to create high quality TypeScript components, 
+it is recommended that you annotate your component as a `React.StatlessComponent` 
+This interface takes a generic argument that allows you to easily provide type annotations for the component props.
 
 ```
 import * as React from 'react';
@@ -66,7 +71,7 @@ ReactDOM.render(
 );
 ```
 
-And also opens up other features like the ability to to specify the displayName
+This annotation also opens up other features like the ability to to specify the displayName which will be used to as the name for the component in React DevTools
 
 ```
 import * as React from 'react';
