@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 const App: React.StatelessComponent<{ message: string }> =
   ({ message }) => <div>{message}</div>;
-App.displayName = "MyApp";
+App.displayName = "App";
 
 ReactDOM.render(
   <App message={"Hello is it me you are looking for?"}/>,
