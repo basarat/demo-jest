@@ -2,12 +2,13 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 class App extends React.Component<{
-  message: string,
+  message: string
 }, {
-    count: number,
-  }> {
+  count?: number
+  foo?: boolean
+}> {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       count: 0
     }
@@ -28,4 +29,4 @@ class App extends React.Component<{
 ReactDOM.render(
   <App message="Hello world prop" />,
   document.getElementById('root')
-);
+)
