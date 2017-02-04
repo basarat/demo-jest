@@ -1,11 +1,32 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const App: React.StatelessComponent<{ message: string }> =
-  ({ message }) => <div>{message}</div>;
-App.displayName = "App";
+class App extends React.Component<{
+  message: string,
+}, {
+    count?: number,
+    foo?: boolean,
+  }> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    }
+  }
+  render() {
+    return (
+      <div onClick={this.increment}>
+        {this.props.message} {this.state.count}</div>
+    )
+  }
+  increment = () => {
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
+}
 
 ReactDOM.render(
-  <App message={"Hello is it me you are looking for?"}/>,
+  <App message="Hello world prop" />,
   document.getElementById('root')
 );

@@ -9,13 +9,19 @@ ReactDOM.render(
 );
 ```
 
-We can easily move this div into a stateless component called <App/> by creating a function App and returning this element.
+We can easily move this div into a stateful component called <App/> by extending from React.Component and returning the div from the render function
 
 ```
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const App = () => <div>Hello world</div>;
+class App extends React.Component<{},{}> {
+  render() {
+    return (
+      <div>Hello world</div>
+    )
+  }
+}
 
 ReactDOM.render(
   <App/>,
@@ -23,70 +29,140 @@ ReactDOM.render(
 );
 ```
 
-Of course one big advantage of components is that you get to use props to change the component behavior e.g 
-we can take the message as a prop by adding it to the function arguments, using it inside the function body
-And now we get to pass in the message as a property to the component.
+Of course one big advantage of components is that you get to use props to change the component behaviour. React.Component takes two generic arguments. The First one is the prop. 
+
+- We can go ahead and add a prop `message` of type string. 
+- We can use this prop in our render method. 
+
+And you can see TypeScript already complaining on the misusage of the component, it is saying that the component expects a prop message to be passed in, so lets go head and pass it in 
 
 ```
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const App = ({ message }) => <div>{message}</div>;
+class App extends React.Component<{
+  message: string,
+}, {}> {
+  render() {
+    return (
+      <div>{this.props.message}</div>
+    )
+  }
+}
 
 ReactDOM.render(
-  <App message={"Hello world"}/>,
+  <App message="Hello world prop" />,
   document.getElementById('root')
 );
 ```
+And you can see that now the div contents are driven by prop. 
 
-You can see it still behaves the same but now we can also control the rendering with the passed in prop. 
+Components that extend from `React.Component` are called stateful cause they can have their own internal state. 
+- The second generic that React.Component takes is actually the type of this State. - Lets go ahead and setup our state have a count of type number. 
+- We can initialize the state in our constructor. 
+- When adding a constructor to a react component, you get passed the initial props which you simply pass to the super React.Component class. 
+- Now we can setup the initial state, which thanks to our generic setup is rich with autocomplete.
+- Finally we can use this state in other places like the render method.
 
 ```
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const App = ({ message }) => <div>{message}</div>;
+class App extends React.Component<{
+  message: string,
+}, {
+    count: number,
+  }> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    }
+  }
+  render() {
+    return (
+      <div>{this.props.message} {this.state.count}</div>
+    )
+  }
+}
 
 ReactDOM.render(
-  <App message={"Hello is it me you are looking for?"}/>,
+  <App message="Hello world prop" />,
   document.getElementById('root')
 );
 ```
 
-Although simple functions work fine for simple stateless components, 
-if you want to create high quality TypeScript components, 
-it is recommended that you annotate your component as a `React.StatlessComponent` 
-This interface takes a generic argument that allows you to easily provide type annotations for the component props.
+The key reason for having local state in a component is ofcourse that you get to manage it inside the component, for example you can add an increment function that uses react.component's setState to increment the count member of the state 
 
 ```
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const App: React.StatelessComponent<{ message: string }>
-  = ({ message }) => <div>{message}</div>;
+class App extends React.Component<{
+  message: string,
+}, {
+    count: number,
+  }> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    }
+  }
+  render() {
+    return (
+      <div>{this.props.message} {this.state.count}</div>
+    )
+  }
+  increment = () => {
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
+}
 
 ReactDOM.render(
-  <App message={"Hello is it me you are looking for?"}/>,
+  <App message="Hello world prop" />,
   document.getElementById('root')
 );
 ```
 
-This annotation also opens up other features like the ability to to specify the displayName which will be used to as the name for the component in React DevTools
+We can then call this function whenever the root div is clicked. 
 
 ```
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-const App: React.StatelessComponent<{ message: string }>
-  = ({ message }) => <div>{message}</div>;
-App.displayName = "App";
+class App extends React.Component<{
+  message: string,
+}, {
+    count: number,
+  }> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: 0
+    }
+  }
+  render() {
+    return (
+      <div onClick={this.increment}>
+        {this.props.message} {this.state.count}</div>
+    )
+  }
+  increment = () => {
+    this.setState({
+      count: this.state.count + 1
+    })
+  }
+}
 
 ReactDOM.render(
-  <App message={"Hello is it me you are looking for?"}/>,
+  <App message="Hello world prop" />,
   document.getElementById('root')
 );
 ```
 
+Now if we go ahead and click the div you can see that the state changes correctly causing the component to re-render with the new state.
 
-
-
+One final thing of note is that it is conventional to mark all state members as optional. This way setState can be called with just the members you want changed.
