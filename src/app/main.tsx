@@ -4,8 +4,7 @@ import * as ReactDOM from 'react-dom';
 class App extends React.Component<{
   message: string,
 }, {
-    count?: number,
-    foo?: boolean,
+    count: number,
   }> {
   constructor(props) {
     super(props);
