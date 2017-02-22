@@ -1,3 +1,3 @@
-module.exports.log = function() {
+export const log = () => {
   console.log('hello world');
 }

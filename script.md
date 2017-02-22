@@ -6,7 +6,7 @@
 
 Here I have a simple log function that logs hello world, exported from utils.js
 ```
-module.exports.log = function() {
+exports.log = function() {
   console.log('hello world');
 }
 ```
@@ -22,3 +22,33 @@ Note that this is all just pure Node style JavaScript. Your can actually use Typ
 Within our tsconfig.json file we set our target, the magic compiler option `"allowJs": true` which tells TypeScript to also support raw `.js` files, and `outDir` to provide an alternate location for *transpiled JavaScript*. Finally we include all the files in the src directory.
 
 Now once I set this as my active project you can see that TypeScript picks up these source files, and I can even build these to our output `lib` directory.
+
+One advantage of using TypeScript as a transpiler is that you get to use the latest JavaScript features e.g. 
+arrow functions 
+```js
+exports.log = () => {
+  console.log('hello world');
+}
+```
+ES6 exports 
+```js
+export const log = () => {
+  console.log('hello world');
+}
+```
+and similarly es6 imports
+```js
+import { log } from './utils';
+log();
+```
+and of course TypeScripts excellent autocomplete.
+
+Additionally you get Syntactic checking.
+```js
+import { log } from './utils';
+log();
+
+asdf!@#
+```
+
+And finally the ability to mix and match JavaScript and TypeScript in the same project so you can upgrade your code base towards greater type safety.
