@@ -4,7 +4,7 @@
 - advantage 3: autocomplete (e.g. autocomplete the log function)
 
 
-Here I have a simple log function that logs hello world, exported from log.js
+Here I have a simple log function that logs hello world, exported from utils.js
 ```
 module.exports.log = function() {
   console.log('hello world');
@@ -13,12 +13,12 @@ module.exports.log = function() {
 
 I will go ahead and create a demo file that requires this function and uses it.
 ```
-const { log } = require('./log');
+const utils = require('./utils');
 
-log();
+utils.log();
 ```
 Note that this is all just pure Node style JavaScript. Your can actually use TypeScript as a transpiler for pure JavaScript projects simply by adding a tsconfig.json file. 
 
 Within our tsconfig.json file we set our target, the magic compiler option `"allowJs": true` which tells TypeScript to also support raw `.js` files, and `outDir` to provide an alternate location for *transpiled JavaScript*. Finally we include all the files in the src directory.
 
-Now once I set this as my active project you can see that TypeScript picks up these source files.
+Now once I set this as my active project you can see that TypeScript picks up these source files, and I can even build these to our output `lib` directory.
