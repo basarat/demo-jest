@@ -1,4 +1,4 @@
-> Using TypeScript for raw JavaScript
+> Using TypeScript for pure JavaScript
 > TypeScript can actually be used just as a JavaScript Transpiler. This allows you to easily maintain your old JavaScript code base along with potentially uplifting to a TypeScript one.
 
 Here I have a simple log function exported from utils.js used in a js file
