@@ -21,6 +21,6 @@ const result = new Calculator()
   .subtract(111)
   .add(10)
   .subtract(100)
-  .result
+  .result;
 
-console.log({ result })
+console.log({ result });
