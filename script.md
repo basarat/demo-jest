@@ -1,4 +1,4 @@
-> Using ES6, ES2015, ESNext with TypeScript
+> Using ES6 with TypeScript
 > TypeScript is very particular about what is and isn't allowed in a TS file to protect you from common developer errors. By default if you set the compile target to ES5 it only allows you to use globally defined variables that were availble in the ES5 timeframe. That said it is super easy to configure TypeScrit to use ES6 or ESNext using the `lib` option. We also cover how to make sure that these features work across the widest range of browsers using a simple polyfill.
 
 
@@ -36,7 +36,7 @@ get compiled down to be just a simple function that does the same thing. However
 ```js
 const foo = () => Promise.resolve(123);
 ```
-TypeScript complains `cannot find name Promise`. We can still keep our target as ES5 but tell TypeScript to allow rutime features of other enviroments using the `lib` option in our tsconfig.json. We jump in to our tsconfig.json, set the `lib` option to include `es6`
+TypeScript complains `cannot find name Promise`. We can still keep our target as ES5 but tell TypeScript to allow rutime features of other enviroments using the `lib` option in our tsconfig.json. We jump in to our tsconfig.json, set the `lib` option to include `es6` in addition to most of the standard JavaScript features categorized under `dom`
 
 ```json
 {
@@ -61,3 +61,5 @@ npm install core-js --save-dev
 ```
 
 Once the install is done you simply import `'core-js/shim'` into your main module to make sure that all the latest ES features are available when the application is used by old browsers.
+
+One final thing worth mentioning is that as new JavaScript features become available you can change your lib to target them e.g. "es2017". But when you do that be sure to check if it actually works with corejs using using the handy EcmaScript compatability table for TypeScript + CoreJS http://kangax.github.io/compat-table/es6/#typescript
