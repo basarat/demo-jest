@@ -23,8 +23,6 @@ Now lets go ahead and create an index.ts source file. Because the target is ES5,
 [1, 2, 3].map(item => console.log(item));
 ```
 
-It works at compile time and runtime just fine. (show demo)
-
 Because we set the target in our `tsconfig.json` file TypeScript will compile any ES6 syntax into ES5 syntax e.g. if we have a simple an arrow function that returns null
 
 ```js
@@ -33,9 +31,9 @@ const foo = () => null;
 it gets compiled down to be just a simple function that does the same thing. However a side effect of using the ES5 target is that we are not allowed to use runtime features that are not available in common ES5 enviroments. For example if we try to return a Promise from our function 
 
 ```js
-const foo = () => Promise.resolve(123);
+const foo = () => Promise.resolve(null);
 ```
-TypeScript complains `cannot find name Promise`. We can still keep our target as ES5 but tell TypeScript to allow rutime features of other enviroments using the `lib` option in our tsconfig.json. We jump in to our tsconfig.json, set the `lib` option to include `es6` in addition to most of the standard JavaScript features categorized under `dom`
+TypeScript complains `cannot find name Promise`. We can still keep our target as ES5 but tell TypeScript to allow runtime features of other enviroments using the `lib` option in our tsconfig.json. We jump in to our tsconfig.json, set the `lib` option to include `es6` in addition to most of the standard JavaScript features categorized under `dom`
 
 ```json
 {
@@ -52,7 +50,7 @@ TypeScript complains `cannot find name Promise`. We can still keep our target as
   ]
 }
 ```
-and now you can see that the error goes away. If you are building an NPM pacakge this would be okay. However if you are targeting using browsers i.e. building an application instead of a library you might also want to polyfill the new ES enviroment features like `Promise`, `Map` etc. The simplest way to do that is to simply install a wholesale polyfill called `corejs`. We can install it using npm
+and now you can see that the error goes away. If you are building an NPM pacakge this would be okay. However if you are targeting browsers i.e. building an application instead of a library you might also want to polyfill the new ES enviroment features like `Promise`, `Map` etc. The simplest way to do that is to simply install a wholesale polyfill called `corejs`. We can install it using npm
 
 ```
 npm install core-js --save-dev
@@ -60,4 +58,4 @@ npm install core-js --save-dev
 
 Once the install is done you simply import `'core-js/shim'` into your main module to make sure that all the latest ES features are available when the application is used by old browsers.
 
-One final thing worth mentioning is that as new JavaScript features become available you can change your lib to target them e.g. "es2017". But when you do that be sure to check if it actually works with corejs using using the handy EcmaScript compatability table for TypeScript + CoreJS http://kangax.github.io/compat-table/es6/#typescript
+One final thing worth mentioning is that as new JavaScript features become available you can change your lib to target them e.g. "es2017". But when you do that be sure to check if it actually works with corejs using using the handy EcmaScript compatability table for TypeScript + CoreJS http://kangax.github.io/compat-table/es6/#typescript for example here we can see that Promise is safe to use for non-obsolete platforms.
