@@ -24,19 +24,12 @@ Here you can go ahead and write down the expected results upfront:
  * Fizz
  * 4
  * Buzz
- * Fizz
- * 7
- * 8
- * Fizz
- * Buzz
- * 11
- * Fizz
- * 13
- * 14
- * FizzBuzz
+ * ...
  */
 ```
-With this understanding in your head. You can jump into the code. The first requirement is to print numbers from 1 to 101, Just need a for loop
+With this understanding in your head. You can jump into the code.
+
+The first requirement is to print numbers from 1 to 101, Just need a for loop
 
 ```js
 for (let index = 1; index < 101; index++) {
@@ -49,6 +42,8 @@ for (let index = 1; index < 101; index++) {
   console.log(index);
 }
 ```
+And if we run it you can see the numbers from 1 to 100.
+
 Next requirement is for multiples of 3 print `Fizz`. Easy as:
 
 ```js
@@ -73,7 +68,9 @@ For multiples of 5 print Buzz. We can easily do that with another if:
     console.log(index);
   }
 ```
-Now for the final condition, It is intentionally provided last to throw off new programmers that might just think (oh another condition, so another if else) `if (index % 3 === 0 && index % 5 === 0)` However this condition cannot be true if any of the previous conditions are true. So we simply move this condition on top.
+Now for the final condition, It is intentionally provided last to throw off new programmers that might just think (oh another condition, so another if else) `if (index % 3 === 0 && index % 5 === 0)`
+
+However if any of the previous conditions is true, then this combined condition cannot be true. So we simply move this combined condition on top.
 
 ```
 if (index % 3 === 0 && index % 5 === 0) {
@@ -100,7 +97,8 @@ for (let index = 1; index < 101; index++) {
 }
 ```
 
-A common additional request is to only do the math once. It is quite easy to do by simply copying these remainder checks and storing them in semantic names `isFizz` and `isBuzz`. Next we use these variables in our code.
+* A common additional request is to only do the math once.
+* It is quite easy to do by simply copying these remainder checks and storing them in semantic names `isFizz` and `isBuzz`. Next we use these variables in our code.
 
 ```js
 for (let index = 1; index < 101; index++) {
@@ -121,7 +119,13 @@ for (let index = 1; index < 101; index++) {
 }
 ```
 
-Another request is to remove the `console.log` duplication. You can do that by storing the result in a variable and logging out the result.
+* And of course there is no output difference.
+
+* Another request is to remove the `console.log` duplication.
+
+* You can do that by creating a variable for the result
+* and then storing the result in this variable for each condition
+* And finally logging out the result variable;
 
 ```js
 for (let index = 1; index < 101; index++) {
@@ -129,23 +133,24 @@ for (let index = 1; index < 101; index++) {
   const isBuzz = index % 5 === 0;
   let result;
   if (isFizz && isBuzz) {
-    result = 'FizzBuzz';
+    result = ('FizzBuzz');
   }
   else if (isFizz) {
-    result = 'Fizz';
+    result = ('Fizz');
   }
   else if (isBuzz) {
-    result = 'Buzz';
+    result = ('Buzz');
   }
   else {
-    result = index;
+    result = (index);
   }
   console.log(result);
 }
 ```
-With code like this the interviewer might ask you to remove the mutation in `result` and go with a more functional approach. They might even give you the hint to use the `conditional ternary` operator.
 
-* An `if/else` chain with single assignment statements can always be converted into a ternary chain.
+Another thing the interviewer might request is to remove the mutation in `result` and go with a more functional approach. They might even give you the hint to use the `conditional ternary` operator.
+
+* An `if/else` chain with only single assignment statements can easily be converted into a ternary chain.
 
 * If bla bla then bla bla otherwise check bla bla then bla bla otherwise
 
@@ -155,12 +160,14 @@ Final result:
 for (let index = 1; index < 101; index++) {
   const isFizz = index % 3 === 0;
   const isBuzz = index % 5 === 0;
-  const result = (isFizz && isBuzz)
-    ? 'FizzBuzz'
-    : isFizz
-      ? 'Fizz'
-      : isBuzz
-        ? 'Buzz' : index
+  let result =
+    isFizz && isBuzz
+      ? 'FizzBuzz'
+      : isFizz
+        ? 'Fizz'
+        : isBuzz
+          ? 'Buzz'
+          : index;
   console.log(result);
 }
 ```

@@ -9,29 +9,13 @@
 for (let index = 1; index < 101; index++) {
   const isFizz = index % 3 === 0;
   const isBuzz = index % 5 === 0;
-  const result = (isFizz && isBuzz)
-    ? 'FizzBuzz'
-    : isFizz
-      ? 'Fizz'
-      : isBuzz
-        ? 'Buzz' : index
+  let result =
+    isFizz && isBuzz
+      ? 'FizzBuzz'
+      : isFizz
+        ? 'Fizz'
+        : isBuzz
+          ? 'Buzz'
+          : index;
   console.log(result);
 }
-
-/**
- * 1
- * 2
- * Fizz
- * 4
- * Buzz
- * Fizz
- * 7
- * 8
- * Fizz
- * Buzz
- * 11
- * Fizz
- * 13
- * 14
- * FizzBuzz
- */
