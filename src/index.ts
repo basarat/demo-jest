@@ -9,7 +9,7 @@
 for (let index = 1; index < 101; index++) {
   const isFizz = index % 3 === 0;
   const isBuzz = index % 5 === 0;
-  let result =
+  const result =
     isFizz && isBuzz
       ? 'FizzBuzz'
       : isFizz

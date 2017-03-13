@@ -154,13 +154,13 @@ Another thing the interviewer might request is to remove the mutation in `result
 
 * If bla bla then bla bla otherwise check bla bla then bla bla otherwise
 
-Final result:
+* And then we can make `result` a const as well.
 
 ```js
 for (let index = 1; index < 101; index++) {
   const isFizz = index % 3 === 0;
   const isBuzz = index % 5 === 0;
-  let result =
+  const result =
     isFizz && isBuzz
       ? 'FizzBuzz'
       : isFizz
@@ -171,3 +171,5 @@ for (let index = 1; index < 101; index++) {
   console.log(result);
 }
 ```
+
+* And the code still behaves the same way as before.
