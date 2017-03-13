@@ -4,8 +4,6 @@
 
 > In this lesson you learn about the problem as well as its solution in TypeScript.
 
-You can define a variable in TypeScript using `var`, `let`, `const`, `function`, `class`, `namespace`, `enum`.
-
 ```js
 /**
  * Write a program that prints the integers from 1 to 100 (inclusive).
