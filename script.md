@@ -1,35 +1,40 @@
-> Variable scope in TypeScript
-> There are a lot of ways to define variables in TypeScript. In this lesson we discuss variable scope which determines all the places where a particular variable can be used.
+> Coding Interview: FizzBuzz
+
+> The FizzBuzz problem is commonly presented as the lowest level of comprehension required to illustrate adequacy in computer programming.
+
+> In this lesson you learn about the problem as well as its solution in TypeScript.
 
 You can define a variable in TypeScript using `var`, `let`, `const`, `function`, `class`, `namespace`, `enum`.
 
 ```js
-var foo = 123;
-let bar = 123;
-const baz = 123;
-function qux(){}
-class Dave {}
-namespace Matt {}
+/**
+ * Write a program that prints the integers from 1 to 100 (inclusive).
+ * But:
+ *  - for multiples of three, print Fizz (instead of the number)
+ *  - for multiples of five, print Buzz (instead of the number)
+ *  - for multiples of both three and five, print FizzBuzz (instead of the number)
+ */
 ```
+It is always a good idea in a coding interview to do a quick run of expected results without actually writing any code.
 
-`var` is something that should be considered legacy and not used in any new code base. Unlike other variables, `var` is *function* scoped. A block has no impact on a var. This can be demonstrated by trying to recreate a var in a block
+Here you can go ahead and write down the expected results upfront:
 
 ```js
-var foo = 123; 
-{
-  var foo = "something"; // Error 
-}
-console.log(foo)
+/**
+ * 1
+ * 2
+ * Fizz
+ * 4
+ * Buzz
+ * Fizz
+ * 7
+ * 8
+ * Fizz
+ * Buzz
+ * 11
+ * Fizz
+ * 13
+ * 14
+ * FizzBuzz
+ */
 ```
-Fortunately TypeScript gives an error in this case as the inferred type of `foo` based on the first line does not match the value we try to assign in line 3. But if you made the mistake of assigning the same type TypeScript will not complain.
-
-```js
-var foo = 123; 
-{
-  var foo = 456; // No Error 
-}
-console.log(foo)
-```
-
-
-TODO: mention creating a scope in switch. 
