@@ -1,189 +1,136 @@
-> Coding Interview: FizzBuzz
+# Serialize objects to JSON
+> JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. Doing JSON serialization and deserialization in JavaScript and TypeScript is super easy as it is a format essentially designed for this language. This lesson covers the JSON primitive provided by JavaScript runtimes
 
-> The FizzBuzz problem is commonly presented as the lowest level of comprehension required to illustrate adequacy in computer programming.
+JavaScript provides a native object called JSON that provides methods for parsing aka converting JSON strings to JavaScript objects.
+And stringifying aka converting JavaScript objects to JSON strings.
 
-> In this lesson you learn about the problem as well as its solution in TypeScript. We will also cover some tricks on approaching the problem and coding interview questions in general.
+```
+JSON
+```
+
+Beyond these two methods, the JSON object has no functionality of its own.
+
+Let’s create an object that we want to serialize:
+
+```
+const foo = {bar: 123};
+```
+The JSON representation of this object would be a string where each identifier is wrapped in double quotes
+```
+`{“bar”: 123}`
+```
+And indeed that is what `JSON.stringify(foo)` gives us
+```ts
+console.log(`{“bar”: 123}` === JSON.stringify(foo));
+```
+I'll just log out the string.
+
+JSON stringify, will escape any quotes in objects keys as needed.
+```
+const foo = {[‘a”b’]: 123};
+console.log(JSON.stringify(foo));
+```
+It will also escape quotes in any string values as needed.
+
+```
+const foo = {[‘a”b’]:’It”s okay’};
+console.log(JSON.stringify(foo));
+```
+
+JSON is aware of the core native types and will pass them through as needed.
 
 ```js
-/**
- * Write a program that prints the integers from 1 to 100 (inclusive).
- * But:
- *  - for multiples of three, print Fizz (instead of the number)
- *  - for multiples of five, print Buzz (instead of the number)
- *  - for multiples of both three and five, print FizzBuzz (instead of the number)
- */
+const foo = {
+  str: 'hello',
+  num: 123,
+  obj: {
+    bar: 123
+  },
+  arr: ['pirate'],
+  tru: true,
+  fls: false,
+  nul: null
+};
 ```
-* The statement for the FizzBuzz problem specifies that you need to print integers from 1 to 100.
-* For multiples of 3, instead of the number you should print `Fizz`,
-* For multiples of 5, instead of the number you should print `Buzz`,
-* And if the number is divisible by both 3 and 5, instead of printing the number, you should print FizzBuzz.
 
-It is always a good idea in a coding interview to do a quick run of expected results without actually writing any code.
+* The `JSON.stringify` function takes three arguments, a `value`, a `replacer` and a `space`. (goto def)
 
-Here you would discuss that expected output should be like `1, 2 ,Fizz (instead of 3), 4, Buzz(instead of 5) and so on`
+The `space` can be used to customize the indentation of the output e.g.
 
-Here you can go ahead and write down the expected results upfront:
+* Passing in a string uses the string for indents e.g. '\t'
+```js
+console.log(JSON.stringify(foo, null, '\t'));
+```
+
+* Passing in a number uses that many spaces for indents e.g. 2 indents each section with 2 spaces.
 
 ```js
-/**
- * 1
- * 2
- * Fizz
- * 4
- * Buzz
- * ...
- */
+console.log(JSON.stringify(foo, null, 2));
 ```
-With this understanding in your head. You can jump into the code.
-
-The first requirement is to print numbers from 1 to 101, Just need a for loop
+* The replacer function can be used to customize the behavior e.g. if we have a key (i.e. we are not at the root) we can replace each value with the key, and for the root we will still use value:
 
 ```js
-for (let index = 1; index < 101; index++) {
-
-}
+console.log(JSON.stringify(foo,
+  (key, value) => key ? key : value,
+  2));
 ```
-And then log out the index.
-```js
-for (let index = 1; index < 101; index++) {
-  console.log(index);
-}
-```
-And if we run it you can see the numbers from 1 to 100.
-
-Next requirement is for multiples of 3 print `Fizz`.
-
-We can do that easily with and if else. If index is a multiple of 3 we will print out fizz, else will  print the index same as before.
+Personally I do all my customizations in the object *before* passing it to stringify.
 
 ```js
-for (let index = 1; index < 101; index++) {
-  if (index % 3 == 0) {
-    console.log('Fizz');
-  }
-  else {
-    console.log(index);
-  }
-}
-```
-For multiples of 5 print Buzz.
-Just another else if to check if its a multiple of 5 and we log out Buzz.
-```js
-  if (index % 3 === 0) {
-    console.log('Fizz');
-  }
-  else if (index % 5 === 0) {
-    console.log('Buzz');
-  }
-  else {
-    console.log(index);
-  }
-```
-Now for the final condition, ... yada yada
-
-Following our previous pattern `if (index % 3 === 0 && index % 5 === 0)` you might be tempted to do another else if to check for multiple of 3 and 5 and log out FizzBuzz.
-
-However you should realize that if any of the previous conditions are true, then this combined condition check will never execute. So we simply move this combined condition on top.
-
-The program specification is intentionally ordered this way to catch unaware programmers off guard but fortunately you will not be one of them.
-
-```
-if (index % 3 === 0 && index % 5 === 0) {
-  console.log('FizzBuzz');
-}
+console.log(JSON.stringify(foo,
+  null,
+  2));
 ```
 
-If we run the application you can see that it is a working solution to the FizzBuzz problem logging out `Fizz` `Buzz` and `FizzBuzz` as required.
+JSON will also convert Dates to a sane string representation as needed e.g. we can wrap each key with
 
 ```js
-for (let index = 1; index < 101; index++) {
-  if (index % 3 === 0 && index % 5 === 0) {
-    console.log('FizzBuzz');
-  }
-  else if (index % 3 === 0) {
-    console.log('Fizz');
-  }
-  else if (index % 5 === 0) {
-    console.log('Buzz');
-  }
-  else {
-    console.log(index);
-  }
-}
+const foo = {
+  now: new Date()
+};
 ```
 
-* A common additional request is to only do the multiple detection math once.
-* It is quite easy to do by simply move moving out these Fizz and Buzz detection experssions and storing there results in semantically named variables `isFizz` and `isBuzz`. Next we use these variables in our code.
+Finally you can customize the JSON representation of any object by provided a `toJSON` property on the object. E.g.
 
 ```js
-for (let index = 1; index < 101; index++) {
-  const isFizz = index % 3 === 0;
-  const isBuzz = index % 5 === 0;
-  if (isFizz && isBuzz) {
-    console.log('FizzBuzz');
-  }
-  else if (isFizz) {
-    console.log('Fizz');
-  }
-  else if (isBuzz) {
-    console.log('Buzz');
-  }
-  else {
-    console.log(index);
-  }
-}
+const foo = {
+  foo: 'foo',
+};
 ```
-
-* Another common additional request is to remove the `console.log` duplication.
-
-* You can do that by creating a variable for the result
-* and then storing the result in this variable for each condition
-* And finally logging out the result variable;
-
+Vs.
 ```js
-for (let index = 1; index < 101; index++) {
-  const isFizz = index % 3 === 0;
-  const isBuzz = index % 5 === 0;
-  let result;
-  if (isFizz && isBuzz) {
-    result = ('FizzBuzz');
+const foo = {
+  foo: 'foo',
+  toJSON: function() {
+    return 'bar';
   }
-  else if (isFizz) {
-    result = ('Fizz');
-  }
-  else if (isBuzz) {
-    result = ('Buzz');
-  }
-  else {
-    result = (index);
-  }
-  console.log(result);
-}
+};
 ```
 
-Another thing the interviewer might request is to remove the mutation of the `result` variable and present a solution with a more functional approach. They might even give you the hint to use the `conditional ternary` operator.
+Now lets talk about a few of the limitations of JSON stringify. Native types that don’t have a special representation for JSON will not serialize well e.g. regex
 
-* An `if/else` chain with only single assignment statements can easily be converted into a ternary chain.
-
-* We will go ahead and assign the result to an expression driven by the conditional ternary operator
-
-* If bla bla then bla bla otherwise check bla bla then bla bla otherwise
-
-* And now since there is no lazy assignment to the `result` variable we can make it a `const` as well.
-
-```js
-for (let index = 1; index < 101; index++) {
-  const isFizz = index % 3 === 0;
-  const isBuzz = index % 5 === 0;
-  const result =
-    isFizz && isBuzz
-      ? 'FizzBuzz'
-      : isFizz
-        ? 'Fizz'
-        : isBuzz
-          ? 'Buzz'
-          : index;
-  console.log(result);
-}
+```
+const foo = {
+  foo: /hello/g
+};
 ```
 
-* And the code still behaves the same way as before.
+Functions cannot be serialized to JSON and are silently ignored
+
+```
+const foo = {
+  foo: () => 'hello'
+};
+console.log(JSON.stringify(foo));
+```
+
+Finally you cannot serialize an object with cycles using JSON.stringify. As a demo
+```
+const foo = {
+  foo: () => 'hello'
+};
+(foo as any).bar = foo;
+console.log(JSON.stringify(foo,
+  null,
+  2));
+```
