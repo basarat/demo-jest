@@ -1,45 +1,47 @@
 # Serialize objects to JSON
 > JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. Doing JSON serialization and deserialization in JavaScript and TypeScript is super easy as it is a format essentially designed for this language. This lesson covers the JSON primitive provided by JavaScript runtimes
 
-JavaScript provides a native object called JSON that provides methods for parsing aka converting JSON strings to JavaScript objects.
-And stringifying aka converting JavaScript objects to JSON strings.
+JavaScript provides a native object called JSON that provides methods for
+* parsing i.e the process of converting JSON strings to JavaScript objects.
+* And stringifying i.e. the process of converting JavaScript objects to JSON strings.
 
 ```js
 JSON
 ```
 
-Beyond these two methods, the JSON object has no functionality of its own.
+Beyond these two methods, the JSON object has no additional functionality. For serialization to JSON strings we use JSON.stringify.
 
-Let’s create an object that we want to serialize:
+To demonstrate JSON stringify, let create an example object foo with a property bar set to the number 123,
 
 ```js
 const foo = {
   bar: 123
 };
 ```
-The JSON representation of this object would be a string where each identifier is wrapped in double quotes
+The JSON representation of this object would be a string where each key is wrapped in double quotes
 ```js
 `{“bar”: 123}`
 ```
-And indeed that is what `JSON.stringify(foo)` gives us
+And indeed that is exactly the string returned by calling `JSON.stringify(foo)` on this object.
 ```js
 console.log(`{“bar”: 123}` === JSON.stringify(foo));
 ```
 I'll just log out the string from now on.
 
-JSON stringify, will escape any quotes in objects keys as needed.
+JSON stringify, will escape any characters that need escaping  e.g. double quotes in objects keys.
 ```js
 const foo = {[‘a”b’]: 123};
 console.log(JSON.stringify(foo));
 ```
-It will also escape quotes in any string values as needed.
+Similarly it will also escape characters in string values if needed.
 
 ```js
 const foo = {[‘a”b’]:’It”s okay’};
 console.log(JSON.stringify(foo));
 ```
 
-JSON is aware of the core native types and will pass them through as needed.
+JSON stringify is aware of the following core native types
+`str`, `num`, objects which in term contain other serializable values, arrays which contain other serializable values, booleans and null.
 
 ```js
 const foo = {
@@ -54,31 +56,31 @@ const foo = {
   nul: null
 };
 ```
+* By default JSON stringify serializes the object into a single line string with zero spaces.
 
-* To allow you to format the outputted string a bit better `JSON.stringify` function takes two additional arguments, a `value`, a `replacer` and a `space`. (goto def)
+* To allow you to format the output string a bit better `JSON.stringify` function takes two additional arguments, a `value`, a `replacer` and a `space`. (goto def)
 
 The `space` argument can be used to customize the indentation of the output e.g.
 
-* Passing in a string uses the string for indents e.g. '\t'
+* Passing in a string uses that string for indents e.g. you can pass in a tab character '\t'
 ```js
 console.log(JSON.stringify(foo, null, '\t'));
 ```
-
-* Passing in a number uses that many spaces for indents e.g. 2 indents each section with 2 spaces.
+* Passing in a number for the space argument, uses that many spaces for indents e.g. the number `2` indents each section with 2 spaces.
 
 ```js
 console.log(JSON.stringify(foo, null, 2));
 ```
-* The replacer function can be used to customize the behavior e.g. if we have a key (i.e. we are not at the root) we can replace each value with the key, and for the root we will still use value:
+* The replacer argument function can be used to customize the behavior for particular keys and value e.g. if we have a key (i.e. we are not at the root) we can replace each value with the key, and for the root we will still use value:
 
 ```js
 console.log(JSON.stringify(foo,
   (key, value) => key ? key : value,
   2));
 ```
-And you can see that all values other than the root are replaced by their keys.
+This results in all values other than the root getting replaced by their keys.
 
-Personally I do all my customizations in the object *before* passing it to stringify.
+Personally I do all my customizations in the object *before* passing it to stringify and have the replacer argument as null.
 
 ```js
 console.log(JSON.stringify(foo,
@@ -86,7 +88,7 @@ console.log(JSON.stringify(foo,
   2));
 ```
 
-JSON will also convert JavaScript Dates to an ISO 8601 string representation as needed.
+JSON stringify will also convert JavaScript Date objects to an ISO 8601 string representation, which is excellent for transferring date time information.
 
 ```js
 const foo = {
@@ -94,30 +96,28 @@ const foo = {
 };
 ```
 
-Underneath it work simply by calling Date's toJSON method.
+Underneath it works simply by calling the native Date objects toJSON method which returns the same string.
 ```js
 const foo = {
   now: new Date().toJSON(),
 };
 ```
-Finally you can customize the JSON representation of any object by provided a `toJSON` property on the object. E.g.
+You can provide the toJSON method to customize the JSON seriliazation for your objects as well. e.g. here we have a simple object with the property foo that serializes to the string as expected.
 
 ```js
 const foo = {
   foo: 'foo',
 };
 ```
-Vs.
+You can override this output by providing a toJSON method and now the object seriliazes to the string returned by toJSON.
 ```js
 const foo = {
   foo: 'foo',
-  toJSON: function() {
-    return 'bar';
-  }
+  toJSON: () => 'bar',
 };
 ```
 
-Now lets talk about a few of the limitations of JSON stringify. Native types that don’t have a special representation for JSON will not serialize well e.g. regex
+Now lets talk about a few of the limitations of JSON stringify. Native types that don’t have a special representation for JSON will not serialize well e.g. native regular expression do not serialize well by default.
 
 ```js
 const foo = {
@@ -125,7 +125,7 @@ const foo = {
 };
 ```
 
-Functions cannot be serialized to JSON and are silently ignored
+Function cannot be serialized to JSON values and therefore keys pointing to functions are silently ignored by JSON stringify.
 
 ```js
 const foo = {
@@ -134,7 +134,9 @@ const foo = {
 console.log(JSON.stringify(foo));
 ```
 
-Finally you cannot serialize an object with cycles using JSON.stringify
+Finally the biggest limitation of JSON stringify is that it cannot serialize an object with cycles and cyclic references.
+
+e.g. here we have an object foo with a property bar pointing back to foo. JSON stringify will throw a runtime error in this case.
 ```js
 const foo = {
   foo: () => 'hello'
