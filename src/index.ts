@@ -1,5 +1,5 @@
 const foo = {
-  foo: () => 'hello'
+  foo: 'foo'
 };
 (foo as any).bar = foo;
 console.log(JSON.stringify(foo,

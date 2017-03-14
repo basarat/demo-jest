@@ -4,7 +4,7 @@
 JavaScript provides a native object called JSON that provides methods for parsing aka converting JSON strings to JavaScript objects.
 And stringifying aka converting JavaScript objects to JSON strings.
 
-```
+```js
 JSON
 ```
 
@@ -12,27 +12,29 @@ Beyond these two methods, the JSON object has no functionality of its own.
 
 Let’s create an object that we want to serialize:
 
-```
-const foo = {bar: 123};
+```js
+const foo = {
+  bar: 123
+};
 ```
 The JSON representation of this object would be a string where each identifier is wrapped in double quotes
-```
+```js
 `{“bar”: 123}`
 ```
 And indeed that is what `JSON.stringify(foo)` gives us
-```ts
+```js
 console.log(`{“bar”: 123}` === JSON.stringify(foo));
 ```
-I'll just log out the string.
+I'll just log out the string from now on.
 
 JSON stringify, will escape any quotes in objects keys as needed.
-```
+```js
 const foo = {[‘a”b’]: 123};
 console.log(JSON.stringify(foo));
 ```
 It will also escape quotes in any string values as needed.
 
-```
+```js
 const foo = {[‘a”b’]:’It”s okay’};
 console.log(JSON.stringify(foo));
 ```
@@ -53,9 +55,9 @@ const foo = {
 };
 ```
 
-* The `JSON.stringify` function takes three arguments, a `value`, a `replacer` and a `space`. (goto def)
+* To allow you to format the outputted string a bit better `JSON.stringify` function takes two additional arguments, a `value`, a `replacer` and a `space`. (goto def)
 
-The `space` can be used to customize the indentation of the output e.g.
+The `space` argument can be used to customize the indentation of the output e.g.
 
 * Passing in a string uses the string for indents e.g. '\t'
 ```js
@@ -74,6 +76,8 @@ console.log(JSON.stringify(foo,
   (key, value) => key ? key : value,
   2));
 ```
+And you can see that all values other than the root are replaced by their keys.
+
 Personally I do all my customizations in the object *before* passing it to stringify.
 
 ```js
@@ -82,7 +86,7 @@ console.log(JSON.stringify(foo,
   2));
 ```
 
-JSON will also convert Dates to a sane string representation as needed e.g. we can wrap each key with
+JSON will also convert JavaScript Dates to an ISO 8601 string representation as needed.
 
 ```js
 const foo = {
@@ -90,6 +94,12 @@ const foo = {
 };
 ```
 
+Underneath it work simply by calling Date's toJSON method.
+```js
+const foo = {
+  now: new Date().toJSON(),
+};
+```
 Finally you can customize the JSON representation of any object by provided a `toJSON` property on the object. E.g.
 
 ```js
@@ -109,7 +119,7 @@ const foo = {
 
 Now lets talk about a few of the limitations of JSON stringify. Native types that don’t have a special representation for JSON will not serialize well e.g. regex
 
-```
+```js
 const foo = {
   foo: /hello/g
 };
@@ -117,15 +127,15 @@ const foo = {
 
 Functions cannot be serialized to JSON and are silently ignored
 
-```
+```js
 const foo = {
   foo: () => 'hello'
 };
 console.log(JSON.stringify(foo));
 ```
 
-Finally you cannot serialize an object with cycles using JSON.stringify. As a demo
-```
+Finally you cannot serialize an object with cycles using JSON.stringify
+```js
 const foo = {
   foo: () => 'hello'
 };
