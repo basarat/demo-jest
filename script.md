@@ -1,5 +1,7 @@
 # Serialize objects to JSON
-> JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. Doing JSON serialization and deserialization in JavaScript and TypeScript is super easy as it is a format essentially designed for this language. This lesson covers the JSON primitive provided by JavaScript runtimes
+> JSON (JavaScript Object Notation) is a lightweight data-interchange format. It is easy for humans to read and write. It is easy for machines to parse and generate. 
+
+> Doing JSON serialization and deserialization in JavaScript and TypeScript is super easy as it is a format essentially designed for this language. This lesson covers the JSON.stringify primitive provided by JavaScript runtimes.
 
 JavaScript provides a native object called JSON that provides methods for
 * parsing i.e the process of converting JSON strings to JavaScript objects.
