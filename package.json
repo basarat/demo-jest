@@ -6,7 +6,7 @@
   "main": "lib/index.js",
   "typings": "lib",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "tsc -p .",
     "test": "jest"
   },
   "keywords": [],

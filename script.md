@@ -9,5 +9,19 @@ export const sum
     a.reduce((acc, val) => acc + val, 0);
 ```
 
-* Jest automatically picks up any files with a `.test.ts` extension
+* Jest automatically picks up any files with a `.test.ts` extension as well as any files in the `__tests__` directory. (add the directory
+* We will go ahead and create a test file for our main module 
 
+```js
+import { sum } from '../index';
+
+test('basic', () => {
+  expect(sum()).toBe(0);
+});
+```
+
+Now we can run this test using `npm test`. You can even run the test in watch mode using `npm test -- --watchAll`. 
+
+```js
+  expect(sum(1, 2)).toBe(3);
+```
