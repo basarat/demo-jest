@@ -25,3 +25,4 @@ Now we can run this test using `npm test`. You can even run the test in watch mo
 ```js
   expect(sum(1, 2)).toBe(3);
 ```
+To re-iterate. We setup our npm test command and added jest same as we would do for JavaScript. But additionally we install the types for jest, ts-jest and added a jest config for TypeScript.
